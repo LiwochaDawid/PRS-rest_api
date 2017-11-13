@@ -13,6 +13,9 @@ import prs.entity.Doctor;
 public class DoctorDAO {
 	@PersistenceContext	
 	private EntityManager entityManager;
+	public Doctor getDoctor(int doctorID) {
+		return entityManager.find(Doctor.class, doctorID);
+	}
 	@SuppressWarnings("unchecked")
 	public List<Doctor> getAllDoctors() {
 		String hql = "FROM Doctor as doctors ORDER BY doctors.doctorID";

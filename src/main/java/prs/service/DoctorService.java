@@ -14,6 +14,9 @@ import prs.entity.Doctor;
 public class DoctorService {
 	@Autowired 
 	private DoctorDAO doctorDAO;
+	public Doctor getDoctor(int doctorID) {
+		return doctorDAO.getDoctor(doctorID);
+	}
 	public List<Doctor> getAllDoctors() {
 		return doctorDAO.getAllDoctors();
 	}
