@@ -1,7 +1,5 @@
 package prs.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="accounts")
-public class Account implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Account {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="account_id")
