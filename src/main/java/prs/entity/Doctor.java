@@ -2,6 +2,7 @@ package prs.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class Doctor {
     private String country;
 	@Column(name="phone_number")
     private String phoneNumber;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
@@ -89,5 +90,11 @@ public class Doctor {
 	}
 	public final void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	public final void setAccount(Account account) {
+		this.account = account;
+	}
+	public final Account getAccount() {
+		return account;
 	}
 }

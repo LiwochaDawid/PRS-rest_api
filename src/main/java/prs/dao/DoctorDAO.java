@@ -21,4 +21,7 @@ public class DoctorDAO {
 		String hql = "FROM Doctor as doctors ORDER BY doctors.doctorID";
 		return (List<Doctor>) entityManager.createQuery(hql).getResultList();
 	}
+	public void addDoctor(Doctor doctor) {
+		entityManager.persist(doctor);
+	}
 }
