@@ -1,4 +1,4 @@
-package prs.wrapper;
+package prs.model;
 
 import prs.entity.Account;
 import prs.entity.Doctor;

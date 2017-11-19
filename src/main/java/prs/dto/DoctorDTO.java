@@ -1,41 +1,28 @@
-package prs.entity;
+package prs.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import prs.entity.Doctor;
 
-@Entity
-@Table(name="doctors")
-public class Doctor {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="doctor_id")
+public class DoctorDTO {
 	private int doctorID;
-	@Column(name="name")
     private String name;
-	@Column(name="surname")
     private String surname;
-	@Column(name="prefix")
     private String prefix;
-	@Column(name="street")
     private String street;
-	@Column(name="postcode")
     private String postcode;
-	@Column(name="city")
     private String city;
-	@Column(name="country")
     private String country;
-	@Column(name="phone_number")
     private String phoneNumber;
-	@OneToOne
-	@JoinColumn(name = "account_id")
-	private Account account;
-	
+    public DoctorDTO(Doctor doctor) {
+		this.doctorID = doctor.getDoctorID();
+		this.name = doctor.getName();
+		this.surname = doctor.getSurname();
+		this.prefix = doctor.getPrefix();
+		this.street = doctor.getStreet();
+		this.postcode = doctor.getPostcode();
+		this.city = doctor.getCity();
+		this.country = doctor.getCountry();
+		this.phoneNumber = doctor.getPhoneNumber();
+	}
 	public final int getDoctorID() {
 		return doctorID;
 	}
@@ -89,11 +76,5 @@ public class Doctor {
 	}
 	public final void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-	public final void setAccount(Account account) {
-		this.account = account;
-	}
-	public final Account getAccount() {
-		return account;
 	}
 }
