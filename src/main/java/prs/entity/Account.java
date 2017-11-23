@@ -16,12 +16,12 @@ public class Account {
 	private int accountID;
 	@Column(name="email")
     private String email;
-	@Column(name="login")
-    private String login;
+	@Column(name="username")
+    private String username;
 	@Column(name="password")
     private String password;
-	@Column(name="salt")
-    private String salt;
+	@Column(name="role")
+    private String role;
 	public final int getAccountID() {
 		return accountID;
 	}
@@ -34,11 +34,11 @@ public class Account {
 	public final void setEmail(String email) {
 		this.email = email;
 	}
-	public final String getLogin() {
-		return login;
+	public final String getUsername() {
+		return username;
 	}
-	public final void setLogin(String login) {
-		this.login = login;
+	public final void setUsername(String username) {
+		this.username = username;
 	}
 	public final String getPassword() {
 		return password;
@@ -46,10 +46,10 @@ public class Account {
 	public final void setPassword(String password) {
 		this.password = password;
 	}
-	public final String getSalt() {
-		return salt;
+	public final String getRole() {
+		return role;
 	}
-	public final void setSalt(String salt) {
-		this.salt = salt;
+	public final void setRole(String role) {
+		this.role = role;
 	}
 }

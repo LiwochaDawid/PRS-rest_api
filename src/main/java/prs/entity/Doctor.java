@@ -33,7 +33,7 @@ public class Doctor {
 	@Column(name="phone_number")
     private String phoneNumber;
 	@OneToOne
-	@JoinColumn(name = "account_id")
+	@JoinColumn(name="account_id")
 	private Account account;
 	
 	public final int getDoctorID() {

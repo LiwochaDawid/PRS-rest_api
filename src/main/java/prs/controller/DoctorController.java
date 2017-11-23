@@ -18,41 +18,28 @@ import org.springframework.web.util.UriComponentsBuilder;
 import prs.dto.DoctorDTO;
 import prs.entity.Doctor;
 import prs.model.DoctorWrapper;
-import prs.model.LogInData;
 import prs.service.DoctorService;
 
-
 @Controller
-@RequestMapping("doctor")
 public class DoctorController {
 	@Autowired
 	private DoctorService doctorService;
-	@GetMapping("{id}")
+	@GetMapping("doctor/{id}")
 	public ResponseEntity<DoctorDTO> getDoctor(@PathVariable("id") Integer id) {
 		DoctorDTO doctor = doctorService.getDoctor(id);
 		return new ResponseEntity<DoctorDTO>(doctor, HttpStatus.OK);
 	}
-	@GetMapping("all")
+	@GetMapping("doctor/all")
 	public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
 		List<DoctorDTO> doctors = doctorService.getAllDoctors();
 		return new ResponseEntity<List<DoctorDTO>>(doctors, HttpStatus.OK);
 	}
-	@PostMapping("account/sign_in")
-	public ResponseEntity<Integer> logInDoctor(@RequestBody LogInData logInData) {
-		Integer doctorID;
-		try {
-			doctorID = doctorService.logInDoctor(logInData);
-		} catch (NonUniqueResultException e) {
-			doctorID = 0;
-		}
-        if (doctorID == 0) {
-        	return new ResponseEntity<Integer>(doctorID, HttpStatus.FORBIDDEN);
-        }
-        else {
-        	return new ResponseEntity<Integer>(doctorID, HttpStatus.ACCEPTED);
-        }
+	@GetMapping("doctor/sign_in/{username}")
+	public ResponseEntity<Integer> logInDoctor(@PathVariable("username") String username) {
+		Integer doctorID = doctorService.logInDoctor(username);
+        return new ResponseEntity<Integer>(doctorID, HttpStatus.ACCEPTED);
 	}
-	@PostMapping("account/sign_up")
+	@PostMapping("sign_up")
 	public ResponseEntity<Void> registerDoctor(@RequestBody DoctorWrapper doctorWrapper, UriComponentsBuilder builder) {
 		boolean isSuccess = doctorService.registerDoctor(doctorWrapper);
         if (!isSuccess) {
@@ -62,7 +49,7 @@ public class DoctorController {
         	return new ResponseEntity<Void>(HttpStatus.CREATED);
         }
 	}
-	@PostMapping("update")
+	@PostMapping("doctor/update")
 	public ResponseEntity<Void> updateArticle(@RequestBody Doctor doctor) {
 		doctorService.updateDoctor(doctor);
 		return new ResponseEntity<Void>(HttpStatus.OK);

@@ -23,16 +23,11 @@ public class DoctorDAO {
 		return (List<Doctor>) entityManager.createQuery(hql).getResultList();
 	}
 	@SuppressWarnings("unchecked")
-	public Doctor getDoctorByAccountID(int accountID) throws NonUniqueResultException {
-		String hql = "FROM Doctor as doctors WHERE doctors.accountID = ?";
+	public Doctor getDoctorByAccountID(int accountID) {
+		String hql = "FROM Doctor as doctors WHERE doctors.account.accountID = ?";
 		List<Doctor> doctor = entityManager.createQuery(hql)
 				.setParameter(1, accountID).getResultList();
-		if (doctor.isEmpty()) {
-			throw new NonUniqueResultException();
-		}
-		else {
-			return doctor.get(0);
-		}
+		return doctor.get(0);
 	}
 	public void addDoctor(Doctor doctor) {
 		entityManager.persist(doctor);

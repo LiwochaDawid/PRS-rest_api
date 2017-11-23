@@ -15,7 +15,6 @@ import prs.dto.DoctorDTO;
 import prs.entity.Account;
 import prs.entity.Doctor;
 import prs.model.DoctorWrapper;
-import prs.model.LogInData;
 
 @Transactional
 @Service
@@ -36,9 +35,11 @@ public class DoctorService {
 		}
 		return doctorsDTO;
 	}
-	public int logInDoctor(LogInData logInData) throws NonUniqueResultException {
-		Account account = accountDAO.getAccount(logInData);
+	public int logInDoctor(String username) throws NonUniqueResultException {
+		Account account = accountDAO.getAccount(username);
 		int accountID = account.getAccountID();
+		System.out.println("OLABOGA");
+		System.out.println(accountID);
 		Doctor doctor = doctorDAO.getDoctorByAccountID(accountID);
 		return doctor.getDoctorID();		 
 	}
