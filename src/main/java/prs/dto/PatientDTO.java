@@ -11,7 +11,6 @@ public class PatientDTO {
     private String city;
     private String country;
     private String phoneNumber;
-    private String email;
     public PatientDTO(Patient patient) {
 		this.patientID = patient.getPatientID();
 		this.name = patient.getName();
@@ -21,7 +20,6 @@ public class PatientDTO {
 		this.city = patient.getCity();
 		this.country = patient.getCountry();
 		this.phoneNumber = patient.getPhoneNumber();
-		this.email = patient.getEmail();
 	}
 	public final int getPatientID() {
 		return patientID;
@@ -70,11 +68,5 @@ public class PatientDTO {
 	}
 	public final void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-	public final String getEmail() {
-		return email;
-	}
-	public final void setEmail(String email) {
-		this.email = email;
 	}
 }

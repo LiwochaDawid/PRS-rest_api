@@ -46,7 +46,6 @@ public class PatientDAO {
 		patient.setCity(newPatient.getCity());
 		patient.setCountry(newPatient.getCountry());
 		patient.setPhoneNumber(newPatient.getPhoneNumber());
-		patient.setEmail(newPatient.getEmail());
 		entityManager.flush();
 	}
 }

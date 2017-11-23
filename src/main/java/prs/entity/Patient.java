@@ -30,8 +30,6 @@ public class Patient {
     private String country;
 	@Column(name="phone_number")
     private String phoneNumber;
-	@Column(name="email")
-    private String email;
 	@OneToOne
 	@JoinColumn(name = "account_id")
 	private Account account;
@@ -83,12 +81,6 @@ public class Patient {
 	}
 	public final void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-	public final String getEmail() {
-		return email;
-	}
-	public final void setEmail(String email) {
-		this.email = email;
 	}
 	public final void setAccount(Account account) {
 		this.account = account;
