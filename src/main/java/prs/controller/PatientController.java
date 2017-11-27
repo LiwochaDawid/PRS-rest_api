@@ -27,41 +27,19 @@ import prs.service.PatientService;
 public class PatientController {
 	@Autowired
 	private PatientService patientService;
+	
 	@GetMapping("{id}")
 	public ResponseEntity<PatientDTO> getPatient(@PathVariable("id") Integer id) {
 		PatientDTO patient = patientService.getPatient(id);
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
 	}
+	
 	@GetMapping("all")
 	public ResponseEntity<List<PatientDTO>> getAllPatients() {
 		List<PatientDTO> patients = patientService.getAllPatients();
 		return new ResponseEntity<List<PatientDTO>>(patients, HttpStatus.OK);
 	}
-	@PostMapping("account/sign_in")
-	public ResponseEntity<Integer> logInPatient(@RequestBody LogInData logInData) {
-		Integer patientID;
-		try {
-			patientID = patientService.logInPatient(logInData);
-		} catch (NonUniqueResultException e) {
-			patientID = 0;
-		}
-        if (patientID == 0) {
-        	return new ResponseEntity<Integer>(patientID, HttpStatus.FORBIDDEN);
-        }
-        else {
-        	return new ResponseEntity<Integer>(patientID, HttpStatus.ACCEPTED);
-        }
-	}
-	@PostMapping("account/sign_up")
-	public ResponseEntity<Void> registerPatient(@RequestBody PatientWrapper patientWrapper, UriComponentsBuilder builder) {
-		boolean isSuccess = patientService.registerPatient(patientWrapper);
-        if (!isSuccess) {
-        	return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }
-        else {
-        	return new ResponseEntity<Void>(HttpStatus.CREATED);
-        }
-	}
+	
 	@PostMapping("update")
 	public ResponseEntity<Void> updateArticle(@RequestBody Patient patient) {
 		patientService.updatePatient(patient);

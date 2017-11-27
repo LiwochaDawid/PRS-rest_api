@@ -21,13 +21,15 @@ import prs.model.LogInData;
 @Service
 public class DoctorService {
 	@Autowired 
-	private DoctorDAO doctorDAO;
+	private DoctorDAO doctorDAO;	
 	@Autowired 
 	private AccountDAO accountDAO;
+	
 	public DoctorDTO getDoctor(int doctorID) {
 		DoctorDTO doctorDTO = new DoctorDTO(doctorDAO.getDoctor(doctorID));
 		return doctorDTO;
 	}
+	
 	public List<DoctorDTO> getAllDoctors() {
 		List<DoctorDTO> doctorsDTO = new ArrayList<>();
 		List<Doctor> doctors = doctorDAO.getAllDoctors();
@@ -36,12 +38,14 @@ public class DoctorService {
 		}
 		return doctorsDTO;
 	}
+	
 	public int logInDoctor(LogInData logInData) throws NonUniqueResultException {
 		Account account = accountDAO.getAccount(logInData);
 		int accountID = account.getAccountID();
 		Doctor doctor = doctorDAO.getDoctorByAccountID(accountID);
 		return doctor.getDoctorID();		 
 	}
+	
 	public synchronized boolean registerDoctor(DoctorWrapper doctorWrapper) {
 		if (accountDAO.isAccountExists(doctorWrapper.getAccount())) {
 			return false;
@@ -53,6 +57,7 @@ public class DoctorService {
 			return true;
 		}
 	}
+	
 	public void updateDoctor(Doctor doctor) {
 		doctorDAO.updateDoctor(doctor);
 	}

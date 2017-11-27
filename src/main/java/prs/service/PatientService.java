@@ -28,6 +28,7 @@ public class PatientService {
 		PatientDTO patientDTO = new PatientDTO(patientDAO.getPatient(patientID));
 		return patientDTO;
 	}
+	
 	public List<PatientDTO> getAllPatients() {
 		List<PatientDTO> patientsDTO = new ArrayList<>();
 		List<Patient> Patients = patientDAO.getAllPatients();
@@ -36,12 +37,14 @@ public class PatientService {
 		}
 		return patientsDTO;
 	}
+	
 	public int logInPatient(LogInData logInData) throws NonUniqueResultException {
 		Account account = accountDAO.getAccount(logInData);
 		int accountID = account.getAccountID();
 		Patient Patient = patientDAO.getPatientByAccountID(accountID);
 		return Patient.getPatientID();		 
 	}
+	
 	public synchronized boolean registerPatient(PatientWrapper PatientWrapper) {
 		if (accountDAO.isAccountExists(PatientWrapper.getAccount())) {
 			return false;
@@ -53,6 +56,7 @@ public class PatientService {
 			return true;
 		}
 	}
+	
 	public void updatePatient(Patient Patient) {
 		patientDAO.updatePatient(Patient);
 	}

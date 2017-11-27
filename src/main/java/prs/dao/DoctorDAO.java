@@ -14,14 +14,17 @@ import prs.entity.Doctor;
 public class DoctorDAO {
 	@PersistenceContext	
 	private EntityManager entityManager;
+	
 	public Doctor getDoctor(int doctorID) {
 		return entityManager.find(Doctor.class, doctorID);
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Doctor> getAllDoctors() {
 		String hql = "FROM Doctor as doctors ORDER BY doctors.doctorID";
 		return (List<Doctor>) entityManager.createQuery(hql).getResultList();
 	}
+	
 	@SuppressWarnings("unchecked")
 	public Doctor getDoctorByAccountID(int accountID) throws NonUniqueResultException {
 		String hql = "FROM Doctor as doctors WHERE doctors.accountID = ?";
@@ -34,9 +37,11 @@ public class DoctorDAO {
 			return doctor.get(0);
 		}
 	}
+	
 	public void addDoctor(Doctor doctor) {
 		entityManager.persist(doctor);
 	}
+	
 	public void updateDoctor(Doctor newDoctor) {
 		Doctor doctor = getDoctor(newDoctor.getDoctorID());
 		doctor.setName(newDoctor.getName());
