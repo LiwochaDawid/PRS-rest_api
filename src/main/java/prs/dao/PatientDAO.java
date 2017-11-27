@@ -15,7 +15,7 @@ public class PatientDAO {
 	@PersistenceContext	
 	private EntityManager entityManager;
 	
-	public Patient getPatient(int patientID) {
+	public Patient getPatientByID(int patientID) {
 		return entityManager.find(Patient.class, patientID);
 	}
 	
@@ -43,7 +43,7 @@ public class PatientDAO {
 	}
 	
 	public void updatePatient(Patient newPatient) {
-		Patient patient = getPatient(newPatient.getPatientID());
+		Patient patient = getPatientByID(newPatient.getPatientID());
 		patient.setName(newPatient.getName());
 		patient.setSurname(newPatient.getSurname());
 		patient.setStreet(newPatient.getStreet());

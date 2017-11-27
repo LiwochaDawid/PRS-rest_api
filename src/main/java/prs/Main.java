@@ -41,6 +41,6 @@ public class Main {
 	 * @return
      */
 	private UserDetailsService userDetailsService(final AccountDAO repository) {
-		return username -> new CustomUserDetails(repository.getAccount(username));
+		return username -> new CustomUserDetails(repository.getAccountByUsername(username));
 	}
 }

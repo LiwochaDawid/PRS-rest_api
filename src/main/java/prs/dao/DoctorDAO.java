@@ -15,7 +15,7 @@ public class DoctorDAO {
 	@PersistenceContext	
 	private EntityManager entityManager;
 	
-	public Doctor getDoctor(int doctorID) {
+	public Doctor getDoctorByID(int doctorID) {
 		return entityManager.find(Doctor.class, doctorID);
 	}
 	
@@ -43,7 +43,7 @@ public class DoctorDAO {
 	}
 	
 	public void updateDoctor(Doctor newDoctor) {
-		Doctor doctor = getDoctor(newDoctor.getDoctorID());
+		Doctor doctor = getDoctorByID(newDoctor.getDoctorID());
 		doctor.setName(newDoctor.getName());
 		doctor.setSurname(newDoctor.getSurname());
 		doctor.setPrefix(newDoctor.getPrefix());

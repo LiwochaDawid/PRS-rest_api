@@ -1,27 +1,47 @@
 package prs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import prs.dao.AccountDAO;
-import prs.entity.Account;
+import prs.dao.DoctorDAO;
+import prs.dao.PatientDAO;
+import prs.model.DoctorWrapper;
+import prs.model.PatientWrapper;
 
 @Transactional
 @Service
 public class AccountService {
 	@Autowired 
 	private AccountDAO accountDAO;
-    @Bean
-    public PasswordEncoder getPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-    
-    public void save(Account account){
-        account.setPassword(getPasswordEncoder().encode(account.getPassword()));
-        accountDAO.addAccount(account);
-    }
+	@Autowired 
+	private DoctorDAO doctorDAO;
+	@Autowired 
+	private PatientDAO patientDAO;
+	
+	public synchronized boolean registerDoctor(DoctorWrapper doctorWrapper) {
+		if (accountDAO.isUsernameExists(doctorWrapper.getAccount())) {
+			return false;
+		}
+		else {
+			accountDAO.addAccount(doctorWrapper.getAccount());
+			doctorWrapper.getDoctor().setAccount(doctorWrapper.getAccount());
+			doctorDAO.addDoctor(doctorWrapper.getDoctor());
+			return true;
+		}
+	}
+	
+	public synchronized boolean registerPatient(PatientWrapper patientWrapper) {
+		if (accountDAO.isUsernameExists(patientWrapper.getAccount())) {
+			return false;
+		}
+		else {
+			accountDAO.addAccount(patientWrapper.getAccount());
+			patientWrapper.getPatient().setAccount(patientWrapper.getAccount());
+			patientDAO.addPatient(patientWrapper.getPatient());
+			return true;
+		}
+	}
+	
 }

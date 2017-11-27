@@ -14,8 +14,8 @@ import java.util.List;
  * Provides a basic implementation of the UserDetails interface
  */
 public class CustomUserDetails implements UserDetails {
-
-    private Collection<? extends GrantedAuthority> authorities;
+	private static final long serialVersionUID = 1L;
+	private Collection<? extends GrantedAuthority> authorities;
     private String password;
     private String username;
 

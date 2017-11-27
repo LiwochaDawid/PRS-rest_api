@@ -2,8 +2,6 @@ package prs.controller;
 
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import prs.dto.PatientDTO;
 import prs.entity.Patient;
-import prs.model.PatientWrapper;
-import prs.model.LogInData;
 import prs.service.PatientService;
 
 
@@ -30,7 +25,7 @@ public class PatientController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<PatientDTO> getPatient(@PathVariable("id") Integer id) {
-		PatientDTO patient = patientService.getPatient(id);
+		PatientDTO patient = patientService.getPatientByID(id);
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
 	}
 	

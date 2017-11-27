@@ -22,9 +22,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     /*
      * Setting up the endpointsconfigurer authentication manager.
      * The AuthorizationServerEndpointsConfigurer defines the authorization and token endpoints and the token services.
@@ -33,7 +30,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager);
+        endpoints
+        	.authenticationManager(authenticationManager)
+        	.pathMapping("/oauth/token", "/token");
     }
 
     /*
@@ -43,7 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("my-trusted-client")
+        clients.inMemory().withClient("prs")
                 .authorizedGrantTypes("client_credentials", "password")
                 .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT").scopes("read","write","trust")
                 .resourceIds("oauth2-resource").accessTokenValiditySeconds(5000).secret("secret");
