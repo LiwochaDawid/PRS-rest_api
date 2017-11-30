@@ -20,7 +20,7 @@ public class AccountController {
 	private AccountService accountService;
 	
 	@PostMapping("sign_up/doctor")
-	public ResponseEntity<Void> registerDoctor(@RequestBody DoctorWrapper doctorWrapper, UriComponentsBuilder builder) {
+	public ResponseEntity<Void> registerDoctor(@RequestBody DoctorWrapper doctorWrapper) {
 		boolean isSuccess = accountService.registerDoctor(doctorWrapper);
         if (!isSuccess) {
         	return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -31,7 +31,7 @@ public class AccountController {
 	}
 	
 	@PostMapping("sign_up/patient")
-	public ResponseEntity<Void> registerPatient(@RequestBody PatientWrapper patientWrapper, UriComponentsBuilder builder) {
+	public ResponseEntity<Void> registerPatient(@RequestBody PatientWrapper patientWrapper) {
 		boolean isSuccess = accountService.registerPatient(patientWrapper);
         if (!isSuccess) {
         	return new ResponseEntity<Void>(HttpStatus.CONFLICT);

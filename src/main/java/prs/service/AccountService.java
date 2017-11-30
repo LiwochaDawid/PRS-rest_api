@@ -25,6 +25,8 @@ public class AccountService {
 			return false;
 		}
 		else {
+			doctorWrapper.getAccount().setRole("ROLE_DOCTOR");
+			doctorWrapper.getAccount().setEnabled(true);
 			accountDAO.addAccount(doctorWrapper.getAccount());
 			doctorWrapper.getDoctor().setAccount(doctorWrapper.getAccount());
 			doctorDAO.addDoctor(doctorWrapper.getDoctor());
@@ -37,11 +39,13 @@ public class AccountService {
 			return false;
 		}
 		else {
+			patientWrapper.getAccount().setRole("ROLE_PATIENT");
+			patientWrapper.getAccount().setEnabled(true);
 			accountDAO.addAccount(patientWrapper.getAccount());
 			patientWrapper.getPatient().setAccount(patientWrapper.getAccount());
 			patientDAO.addPatient(patientWrapper.getPatient());
 			return true;
 		}
 	}
-	
+
 }

@@ -22,6 +22,11 @@ public class PatientService {
 		return patientDTO;
 	}
 	
+	public PatientDTO getPatientByUsername(String username) {
+		PatientDTO patientDTO = new PatientDTO(patientDAO.getPatientByUsername(username));
+		return patientDTO;
+	}
+	
 	public List<PatientDTO> getAllPatients() {
 		List<PatientDTO> patientsDTO = new ArrayList<>();
 		List<Patient> Patients = patientDAO.getAllPatients();

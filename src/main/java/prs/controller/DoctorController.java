@@ -1,6 +1,9 @@
 package prs.controller;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,13 @@ public class DoctorController {
 		DoctorDTO doctor = doctorService.getDoctorByID(id);
 		return new ResponseEntity<DoctorDTO>(doctor, HttpStatus.OK);
 	}
+	
+	@GetMapping("this")
+    public ResponseEntity<DoctorDTO> getCurrentDoctor(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+		DoctorDTO doctor = doctorService.getDoctorByUsername(principal.getName());
+		return new ResponseEntity<DoctorDTO>(doctor, HttpStatus.OK);
+    }
 	
 	@GetMapping("all")
 	public ResponseEntity<List<DoctorDTO>> getAllDoctors() {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import prs.dao.AccountDAO;
 import prs.dao.DoctorDAO;
 import prs.dto.DoctorDTO;
 import prs.entity.Doctor;
@@ -16,10 +17,15 @@ import prs.entity.Doctor;
 @Service
 public class DoctorService {
 	@Autowired 
-	private DoctorDAO doctorDAO;	
+	private DoctorDAO doctorDAO;
 	
 	public DoctorDTO getDoctorByID(int doctorID) {
 		DoctorDTO doctorDTO = new DoctorDTO(doctorDAO.getDoctorByID(doctorID));
+		return doctorDTO;
+	}
+	
+	public DoctorDTO getDoctorByUsername(String username) {
+		DoctorDTO doctorDTO = new DoctorDTO(doctorDAO.getDoctorByUsername(username));
 		return doctorDTO;
 	}
 	

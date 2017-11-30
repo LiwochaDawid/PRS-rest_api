@@ -3,7 +3,6 @@ package prs.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
@@ -26,18 +25,21 @@ public class DoctorDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Doctor getDoctorByAccountID(int accountID) throws NonUniqueResultException {
-		String hql = "FROM Doctor as doctors WHERE doctors.accountID = ?";
+	public Doctor getDoctorByAccountID(int accountID) {
+		String hql = "FROM Doctor as doctors WHERE doctors.account.accountID = ?";
 		List<Doctor> doctor = entityManager.createQuery(hql)
 				.setParameter(1, accountID).getResultList();
-		if (doctor.isEmpty()) {
-			throw new NonUniqueResultException();
-		}
-		else {
-			return doctor.get(0);
-		}
+		return doctor.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Doctor getDoctorByUsername(String username) {
+		String hql = "FROM Doctor as doctors WHERE doctors.account.username = ?";
+		List<Doctor> doctor = entityManager.createQuery(hql)
+				.setParameter(1, username).getResultList();
+		return doctor.get(0);
+	}
+		
 	public void addDoctor(Doctor doctor) {
 		entityManager.persist(doctor);
 	}
