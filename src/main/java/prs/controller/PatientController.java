@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,18 +29,21 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
 	@GetMapping("{id}")
 	public ResponseEntity<PatientDTO> getPatient(@PathVariable("id") Integer id) {
 		PatientDTO patient = patientService.getPatientByID(id);
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
 	@GetMapping("all")
 	public ResponseEntity<List<PatientDTO>> getAllPatients() {
 		List<PatientDTO> patients = patientService.getAllPatients();
 		return new ResponseEntity<List<PatientDTO>>(patients, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	@GetMapping("this")
     public ResponseEntity<PatientDTO> getCurrentPatient(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -47,8 +51,9 @@ public class PatientController {
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
     }
 	
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
 	@PostMapping("update")
-	public ResponseEntity<Void> updateArticle(@RequestBody Patient patient) {
+	public ResponseEntity<Void> updatePatient(@RequestBody Patient patient) {
 		patientService.updatePatient(patient);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
