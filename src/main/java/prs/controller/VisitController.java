@@ -32,7 +32,7 @@ public class VisitController {
     @Autowired
 	private VisitService visitService;
     
-    @PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+    @PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
     @GetMapping("all")
         public ResponseEntity<List<VisitDTO>> getAllVisits() {
 		List<VisitDTO> visits = visitService.getAllVisits();
