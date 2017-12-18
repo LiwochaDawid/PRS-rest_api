@@ -32,19 +32,26 @@ public class VisitController {
     @Autowired
 	private VisitService visitService;
     
-    @PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
+    @PreAuthorize("hasRole('ROLE_DOCTOR')")
     @GetMapping("all")
-        public ResponseEntity<List<VisitDTO>> getAllVisits() {
+    public ResponseEntity<List<VisitDTO>> getAllVisits() {
 		List<VisitDTO> visits = visitService.getAllVisits();
 		return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
 	}
-        
-    @PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
-    @GetMapping("this")
-        public ResponseEntity<List<VisitDTO>> getThisDoctorVisits(HttpServletRequest request){
-            Principal principal = request.getUserPrincipal();
-            List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
-            return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
-        }
-    
+	    
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("this")
+	public ResponseEntity<List<VisitDTO>> getThisDoctorVisits(HttpServletRequest request){
+	    Principal principal = request.getUserPrincipal();
+	    List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
+	    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("future")
+	public ResponseEntity<List<VisitDTO>> getThisDoctorFutureVisits(HttpServletRequest request){
+		Principal principal = request.getUserPrincipal();
+		List<VisitDTO> visits = visitService.getThisDoctorFutureVisits(principal.getName());
+		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
 }
