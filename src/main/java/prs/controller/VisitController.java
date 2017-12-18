@@ -62,4 +62,12 @@ public class VisitController {
 		List<VisitDTO> visits = visitService.getThisDoctorPastVisits(principal.getName());
 		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("today")
+	public ResponseEntity<List<VisitDTO>> getThisDoctorTodayVisits(HttpServletRequest request){
+		Principal principal = request.getUserPrincipal();
+		List<VisitDTO> visits = visitService.getThisDoctorTodayVisits(principal.getName());
+		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
 }

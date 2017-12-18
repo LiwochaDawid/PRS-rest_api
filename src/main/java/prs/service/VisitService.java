@@ -61,4 +61,13 @@ private VisitDAO visitDAO;
 		}
         return visitDTO;
     }
+    
+    public List<VisitDTO> getThisDoctorTodayVisits(String username){
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisDoctorTodayVisits(username);
+        for (int i=0; i<visits.size(); i++) {
+			visitDTO.add(new VisitDTO(visits.get(i)));
+		}
+        return visitDTO;
+    }
 }

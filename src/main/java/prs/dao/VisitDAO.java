@@ -55,4 +55,15 @@ public class VisitDAO {
 				.getResultList();
 		return visits;
     }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getThisDoctorTodayVisits(String name){
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date = ? ORDER BY visits.date";
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, name)
+				.setParameter(2, date)
+				.getResultList();
+		return visits;
+    }
 }
