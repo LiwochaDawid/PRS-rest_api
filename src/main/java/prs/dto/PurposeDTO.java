@@ -19,7 +19,7 @@ public class PurposeDTO {
     private String description;
     private Time duration;
     private int price;
-    private int doctorID;
+    private DoctorDTO doctor;
     
     public PurposeDTO(Purpose purpose){
         this.purposeID = purpose.getPurposeID();
@@ -27,7 +27,7 @@ public class PurposeDTO {
         this.description = purpose.getDescription();
         this.duration = purpose.getDuration();
         this.price = purpose.getPrice();
-        this.doctorID = purpose.getDoctorID();
+        this.doctor = new DoctorDTO(purpose.getDoctor());
     }
     
     public final int getPurposeID(){
@@ -70,11 +70,11 @@ public class PurposeDTO {
         this.price = price;
     }
     
-    public final int getDoctorID(){
-        return doctorID;
+    public final DoctorDTO getDoctor(){
+        return doctor;
     }
     
-    public final void setDoctorID(int doctorID){
-        this.doctorID = doctorID;
+    public final void setDoctor(DoctorDTO doctor){
+        this.doctor = doctor;
     }
 }

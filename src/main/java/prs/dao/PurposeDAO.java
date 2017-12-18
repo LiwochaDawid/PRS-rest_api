@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import prs.entity.Purpose;
+import prs.entity.Visit;
 
 /**
  *
@@ -28,4 +29,18 @@ public class PurposeDAO {
 				.setParameter(1, purposeID).getResultList();
 		return purpose.get(0);
 	}
+
+    @SuppressWarnings("unchecked")
+    public List<Purpose> getAllPurposes(){
+        String hql = "FROM Purpose as purposes ORDER BY purposes.purposeID";
+		return (List<Purpose>) entityManager.createQuery(hql).getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Purpose> getDoctorPurposes(String name){
+        String hql = "FROM Purpose as purposes WHERE purposes.doctor.account.username = ? ORDER BY purposes.purposeID";
+        List<Purpose> purposes = entityManager.createQuery(hql)
+				.setParameter(1, name).getResultList();
+		return purposes;
+    }
 }

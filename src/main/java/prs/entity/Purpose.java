@@ -29,16 +29,17 @@ public class Purpose {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="purpose_id")
 	private int purposeID;
-	@JoinColumn(name = "name")
+    @Column(name = "name")
 	private String name;
-	@JoinColumn(name = "description")
+	@Column(name = "description")
 	private String description;
     @Column(name="duration")
 	private Time duration;
     @Column(name="price")
     private int price;
-    @Column(name="doctor_id")
-    private int doctorID;
+	@OneToOne
+	@JoinColumn(name = "doctor_id")
+	private Doctor doctor;
 
     public final int getPurposeID()
     {
@@ -90,14 +91,14 @@ public class Purpose {
     	this.price = price;
     }
 
-    public final int getDoctorID()
+    public final Doctor getDoctor()
     {
-        return doctorID;
+        return doctor;
     }
 
-    public final void setDoctorID(int doctorID)
+    public final void setDoctor(Doctor doctor)
     {
-    	this.doctorID = doctorID;
+    	this.doctor = doctor;
     }
 }
 

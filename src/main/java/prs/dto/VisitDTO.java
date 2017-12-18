@@ -5,7 +5,8 @@
  */
 package prs.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+
 import prs.entity.Doctor;
 import prs.entity.Patient;
 import prs.entity.Visit;
@@ -15,7 +16,7 @@ import prs.entity.Visit;
  */
 public class VisitDTO {
     private int visitID;
-    private Date date;
+    private Timestamp date;
     private String comment;
     private PatientDTO patient;
     private DoctorDTO doctor;
@@ -32,7 +33,7 @@ public class VisitDTO {
         this.visitID=visitID;
     }
     
-    public final void setDate(Date date){
+    public final void setDate(Timestamp date){
         this.date=date;
     }
     
@@ -54,7 +55,7 @@ public class VisitDTO {
         return visitID;
     }
     
-    public final Date getDate()
+    public final Timestamp getDate()
     {
         return date;
     }
