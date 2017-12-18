@@ -24,6 +24,7 @@ public class VisitDTO {
         this.visitID=visit.getVisitID();
         this.date = visit.getDate();
         this.comment= visit.getComment();
+        this.patient=new PatientDTO(visit.getPatient());
         this.doctor=new DoctorDTO(visit.getDoctor());
     }
     
