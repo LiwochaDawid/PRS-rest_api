@@ -6,6 +6,8 @@
 package prs.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import prs.service.VisitService;
 
@@ -69,5 +72,16 @@ public class VisitController {
 		Principal principal = request.getUserPrincipal();
 		List<VisitDTO> visits = visitService.getThisDoctorTodayVisits(principal.getName());
 		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("date/{date}")
+	public ResponseEntity<List<VisitDTO>> getDoctorVisitsByDate(@PathVariable("date") String date, HttpServletRequest request) throws ParseException {
+    	Principal principal = request.getUserPrincipal();
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		java.util.Date parsedDate = format.parse(date);
+		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+    	List<VisitDTO> visits = visitService.getThisDoctorDateVisits(principal.getName(), sqlDate);
+    	return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
 	}
 }

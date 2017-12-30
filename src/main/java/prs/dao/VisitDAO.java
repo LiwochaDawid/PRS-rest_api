@@ -5,6 +5,8 @@
  */
 package prs.dao;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,5 +67,14 @@ public class VisitDAO {
 				.setParameter(2, date)
 				.getResultList();
 		return visits;
+    }
+
+    public List<Visit> getThisDoctorDateVisits(String name, Date date) {
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date = ? ORDER BY visits.date";
+        List<Visit> visits = entityManager.createQuery(hql)
+                .setParameter(1, name)
+                .setParameter(2, date)
+                .getResultList();
+        return visits;
     }
 }

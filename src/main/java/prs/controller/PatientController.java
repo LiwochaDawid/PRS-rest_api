@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class PatientController {
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("all")
 	public ResponseEntity<List<PatientDTO>> getAllPatients() {
 		List<PatientDTO> patients = patientService.getAllPatients();
@@ -54,6 +55,16 @@ public class PatientController {
 	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
 	@PostMapping("update")
 	public ResponseEntity<Void> updatePatient(@RequestBody Patient patient) {
+		patientService.updatePatient(patient);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PostMapping("updateThis")
+	public ResponseEntity<Void> updateThisPatient(@RequestBody Patient patient,HttpServletRequest request)	{
+		Principal principal = request.getUserPrincipal();
+		PatientDTO oldPatient = patientService.getPatientByUsername(principal.getName());
+		patient.setPatientID(oldPatient.getPatientID());
 		patientService.updatePatient(patient);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

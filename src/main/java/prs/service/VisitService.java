@@ -5,6 +5,8 @@
  */
 package prs.service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +64,21 @@ private VisitDAO visitDAO;
         return visitDTO;
     }
     
-    public List<VisitDTO> getThisDoctorTodayVisits(String username){
+    public List<VisitDTO> getThisDoctorTodayVisits(String name){
         List<VisitDTO> visitDTO = new ArrayList<>();
-        List<Visit> visits = visitDAO.getThisDoctorTodayVisits(username);
+        List<Visit> visits = visitDAO.getThisDoctorTodayVisits(name);
         for (int i=0; i<visits.size(); i++) {
 			visitDTO.add(new VisitDTO(visits.get(i)));
 		}
+        return visitDTO;
+    }
+
+    public List<VisitDTO> getThisDoctorDateVisits(String name, Date date) {
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisDoctorDateVisits(name, date);
+        for (int i=0; i<visits.size(); i++) {
+            visitDTO.add(new VisitDTO(visits.get(i)));
+        }
         return visitDTO;
     }
 }
