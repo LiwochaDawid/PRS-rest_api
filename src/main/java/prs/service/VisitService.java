@@ -164,13 +164,17 @@ public class VisitService {
         return visitDTO;
     }
     
-    public List<VisitDTO> getDoctorFutureVisitsByID(int id){
-        List<VisitDTO> visitDTO = new ArrayList<>();
+    public List<VisitDateDTO> getDoctorFutureVisitsByID(int id){
+        List<VisitDateDTO> visitDateDTO = new ArrayList<>();
         List<Visit> visits = visitDAO.getDoctorFutureVisitsByID(id);
         for (int i=0; i<visits.size(); i++) {
-			visitDTO.add(new VisitDTO(visits.get(i)));
+        	visitDateDTO.add(new VisitDateDTO(visits.get(i).getDate(), visits.get(i).getPurpose().getDuration()));
 		}
-        return visitDTO;
+        return visitDateDTO;
+    }
+
+    public Long getDoctorNumberOfVisits(String name, Date date) {
+        return visitDAO.getDoctorNumberOfVisits(name, date);
     }
 	
 	public void addVisitAsPatient(Visit visit, String name) {
