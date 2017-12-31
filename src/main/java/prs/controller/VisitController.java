@@ -17,18 +17,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import prs.service.VisitService;
-
-
 import prs.dto.VisitDTO;
 import prs.dto.VisitDateDTO;
 import prs.entity.Visit;
-import prs.service.VisitService;
-/**
- *
- * @author Janusz
- */
 
 @Controller
 @RequestMapping("visit")
@@ -172,5 +167,28 @@ public class VisitController {
 		java.sql.Date sqlDateEnd = new java.sql.Date(parsedDate.getTime());
 		List<VisitDTO> visits = visitService.getThisPatientDateVisitsBetween(principal.getName(), sqlDateStart, sqlDateEnd);
     	return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("futureDoctorID={id}")
+	public ResponseEntity<List<VisitDTO>> getDoctorFutureVisitsByID(@PathVariable("id") int id) {
+    	List<VisitDTO> visits = visitService.getDoctorFutureVisitsByID(id);
+    	return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PostMapping("addAsPatient")
+	public ResponseEntity<Void> addVisitAsPatient(@RequestBody Visit visit, HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		visitService.addVisitAsPatient(visit, principal.getName());
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("addAsDoctor")
+	public ResponseEntity<Void> addVisitAsDoctor(@RequestBody Visit visit, HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		visitService.addVisitAsDoctor(visit, principal.getName());
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

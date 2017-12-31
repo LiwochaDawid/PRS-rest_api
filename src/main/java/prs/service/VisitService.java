@@ -6,30 +6,28 @@
 package prs.service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import prs.dto.PurposeDTO;
 import prs.dto.VisitDTO;
 import prs.dto.VisitDateDTO;
+import prs.dao.DoctorDAO;
+import prs.dao.PatientDAO;
 import prs.dao.VisitDAO;
-import prs.entity.Purpose;
 import prs.entity.Visit;
-
-/**
- *
- * @author Janusz
- */
 
 @Transactional
 @Service
 public class VisitService {
-    @Autowired 
+    @Autowired
     private VisitDAO visitDAO;
+    @Autowired
+    private DoctorDAO doctorDAO;
+    @Autowired
+    private PatientDAO patientDAO;
     
     public List<VisitDTO> getAllVisits() {
 		List<VisitDTO> visitsDTO = new ArrayList<>();
@@ -165,4 +163,28 @@ public class VisitService {
         }
         return visitDTO;
     }
+    
+    public List<VisitDTO> getDoctorFutureVisitsByID(int id){
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getDoctorFutureVisitsByID(id);
+        for (int i=0; i<visits.size(); i++) {
+			visitDTO.add(new VisitDTO(visits.get(i)));
+		}
+        return visitDTO;
+    }
+	
+	public void addVisitAsPatient(Visit visit, String name) {
+		visit.getPatient().setPatientID(patientDAO.getPatientByUsername(name).getPatientID());
+		addVisit(visit);
+	}
+	
+	public void addVisitAsDoctor(Visit visit, String name) {
+		visit.getDoctor().setDoctorID(doctorDAO.getDoctorByUsername(name).getDoctorID());
+		addVisit(visit);
+	}
+	
+	public void addVisit(Visit visit) {
+		//Conflict handling missing
+		visitDAO.addVisit(visit);
+	}
 }
