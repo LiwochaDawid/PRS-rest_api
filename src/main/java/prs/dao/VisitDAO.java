@@ -139,4 +139,38 @@ public class VisitDAO {
                 .getResultList();
         return visits;
     }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getPatientVisitsByID(int id){
+        String hql = "FROM Visit as visits WHERE visits.patient.patientID = ? ORDER BY visits.date";
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, id).getResultList();
+		return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getPatientVisitsByID(int id, Date dateStart, Date dateEnd){
+        String hql = "FROM Visit as visits WHERE visits.patient.patientID = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        java.sql.Date sqlDateStart = new java.sql.Date(dateStart.getTime() - 24*60*60*1000);
+        java.sql.Date sqlDateEnd = new java.sql.Date(dateEnd.getTime() + 24*60*60*1000);
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, id)
+                .setParameter(2, sqlDateStart)
+                .setParameter(3, sqlDateEnd)
+                .getResultList();
+		return visits;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Visit> getThisPatientDateVisitsBetween(String name, Date dateStart, Date dateEnd) {
+        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        java.sql.Date sqlDateStart = new java.sql.Date(dateStart.getTime() - 24*60*60*1000);
+        java.sql.Date sqlDateEnd = new java.sql.Date(dateEnd.getTime() + 24*60*60*1000);
+        List<Visit> visits = entityManager.createQuery(hql)
+                .setParameter(1, name)
+                .setParameter(2, sqlDateStart)
+                .setParameter(3, sqlDateEnd)
+                .getResultList();
+        return visits;
+    }
 }

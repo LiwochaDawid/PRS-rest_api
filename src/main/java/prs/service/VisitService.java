@@ -138,4 +138,31 @@ public class VisitService {
         }
         return visitDTO;
     }
+
+    public List<VisitDTO> getPatientVisitsByID(int id) {
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getPatientVisitsByID(id);
+        for (int i=0; i<visits.size(); i++) {
+            visitDTO.add(new VisitDTO(visits.get(i)));
+        }
+        return visitDTO;
+    }
+
+    public List<VisitDTO> getPatientVisitsByID(int id, Date dateStart, Date dateEnd) {
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getPatientVisitsByID(id, dateStart, dateEnd);
+        for (int i=0; i<visits.size(); i++) {
+            visitDTO.add(new VisitDTO(visits.get(i)));
+        }
+        return visitDTO;
+    }
+
+    public List<VisitDTO> getThisPatientDateVisitsBetween(String name, Date dateStart, Date dateEnd) {
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisPatientDateVisitsBetween(name, dateStart, dateEnd);
+        for (int i=0; i<visits.size(); i++) {
+            visitDTO.add(new VisitDTO(visits.get(i)));
+        }
+        return visitDTO;
+    }
 }
