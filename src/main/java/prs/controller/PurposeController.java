@@ -15,37 +15,63 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import prs.service.DoctorService;
 import prs.service.PurposeService;
+import prs.dto.DoctorDTO;
 import prs.dto.PurposeDTO;
 import prs.dto.VisitDTO;
+import prs.entity.Patient;
+import prs.entity.Purpose;
 
 @Controller
 @RequestMapping("purpose")
 public class PurposeController {
     @Autowired
 	private PurposeService purposeService;
+	private DoctorService doctorService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+    /*
+    @PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("{id}")
-	public ResponseEntity<PurposeDTO> getPurpose(@PathVariable("id") Integer id) {
+	public ResponseEntity<PurposeDTO> getPurposeByID(@PathVariable("id") Integer id) {
 		PurposeDTO purpose = purposeService.getPurposeByID(id);
 		return new ResponseEntity<PurposeDTO>(purpose, HttpStatus.OK);
 	}
+	*/
 	
+    /*
     @PreAuthorize("hasRole('ROLE_DOCTOR')")
     @GetMapping("all")
     public ResponseEntity<List<PurposeDTO>> getAllPurposes() {
 		List<PurposeDTO> purposes = purposeService.getAllPurposes();
 		return new ResponseEntity<List<PurposeDTO>>(purposes, HttpStatus.OK);
 	}
+	*/
+	
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("doctor={id}")
+	public ResponseEntity<List<PurposeDTO>> getPurposesByDoctorID(@PathVariable("id") Integer id) {
+		List<PurposeDTO> purposes = purposeService.getDoctorPurposes(id);
+		return new ResponseEntity<List<PurposeDTO>>(purposes, HttpStatus.OK);
+	}
     
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+    @PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("doctor")
 	public ResponseEntity<List<PurposeDTO>> getDoctorPurposes(HttpServletRequest request){
 	    Principal principal = request.getUserPrincipal();
 	    List<PurposeDTO> purposes = purposeService.getDoctorPurposes(principal.getName());
 	    return new ResponseEntity<List<PurposeDTO>>(purposes,HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("add")
+	public ResponseEntity<Void> addPatient(@RequestBody Purpose purpose, HttpServletRequest request) {
+	    Principal principal = request.getUserPrincipal();
+		purposeService.addPurpose(purpose, principal.getName());
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

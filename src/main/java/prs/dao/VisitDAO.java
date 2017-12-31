@@ -22,15 +22,17 @@ public class VisitDAO {
     @PersistenceContext	
     private EntityManager entityManager;
 
+    /*
     @SuppressWarnings("unchecked")
     public List<Visit> getAllVisits(){
         String hql = "FROM Visit as visits ORDER BY visits.visitID";
 		return (List<Visit>) entityManager.createQuery(hql).getResultList();
     }
+    */
     
     @SuppressWarnings("unchecked")
-	public List<Visit> getThisDoctorVisits(String name){
-        String hql = "FROM Visit as visits WHERE visits.doctor.account.username=? ORDER BY visits.visitID";
+	public List<Visit> getThisVisits(String name){
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? ORDER BY visits.date";
         List<Visit> visits = entityManager.createQuery(hql)
 				.setParameter(1, name).getResultList();
 		return visits;
@@ -69,6 +71,7 @@ public class VisitDAO {
 		return visits;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Visit> getThisDoctorDateVisits(String name, Date date) {
         String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date = ? ORDER BY visits.date";
         List<Visit> visits = entityManager.createQuery(hql)

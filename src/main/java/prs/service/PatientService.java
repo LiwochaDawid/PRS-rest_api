@@ -36,11 +36,11 @@ public class PatientService {
 		return patientsDTO;
 	}
 	
-	public void updatePatient(Patient Patient) {
-		patientDAO.updatePatient(Patient);
+	public void updatePatient(Patient patient) {
+		patientDAO.updatePatient(patient);
 	}
 	
-	public void addPatient(Patient Patient) {
-		patientDAO.addPatient(Patient);
+	public void addPatient(Patient patient) {
+		patientDAO.addPatient(patient);
 	}
 }

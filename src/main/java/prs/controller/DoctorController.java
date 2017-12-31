@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import prs.dto.DoctorDTO;
+import prs.dto.PatientDTO;
 import prs.entity.Doctor;
 import prs.service.DoctorService;
 
@@ -51,7 +52,10 @@ public class DoctorController {
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("update")
-	public ResponseEntity<Void> updateDoctor(@RequestBody Doctor doctor) {
+	public ResponseEntity<Void> updateDoctor(@RequestBody Doctor doctor, HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		DoctorDTO oldDoctor = doctorService.getDoctorByUsername(principal.getName());
+		doctor.setDoctorID(oldDoctor.getDoctorID());
 		doctorService.updateDoctor(doctor);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

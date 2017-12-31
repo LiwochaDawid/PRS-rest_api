@@ -20,6 +20,7 @@ public class VisitDTO {
     private String comment;
     private PatientDTO patient;
     private DoctorDTO doctor;
+    private PurposeDTO purpose;
     
     public VisitDTO(Visit visit){
         this.visitID=visit.getVisitID();
@@ -51,6 +52,11 @@ public class VisitDTO {
         this.patient = patient;
     }
     
+    public final void setPurpose(PurposeDTO purpose)
+    {
+        this.purpose = purpose;
+    }
+    
     public final int getVisitID(){
         return visitID;
     }
@@ -70,5 +76,9 @@ public class VisitDTO {
     
     public final PatientDTO getPatient(){
         return patient;
+    }
+    
+    public final PurposeDTO getPurpose(){
+        return purpose;
     }
 }

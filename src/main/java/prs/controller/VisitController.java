@@ -35,12 +35,14 @@ public class VisitController {
     @Autowired
 	private VisitService visitService;
     
+    /*
     @PreAuthorize("hasRole('ROLE_DOCTOR')")
     @GetMapping("all")
     public ResponseEntity<List<VisitDTO>> getAllVisits() {
 		List<VisitDTO> visits = visitService.getAllVisits();
 		return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
 	}
+	*/
 	    
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("this")
@@ -49,6 +51,22 @@ public class VisitController {
 	    List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
 	    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
 	}
+	
+	/*
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+	@GetMapping("test")
+	public ResponseEntity<List<VisitDTO>> test(HttpServletRequest request){
+	    Principal principal = request.getUserPrincipal();
+	    if (request.isUserInRole("ROLE_DOCTOR")) {
+		    List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
+		    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	    }
+	    else {
+		    List<VisitDTO> visits = visitService.getThisPatientVisits(principal.getName());
+		    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	    }
+	}
+	*/
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("future")

@@ -39,6 +39,9 @@ public class Visit {
 	private Timestamp date;
     @Column(name="comment")
     private String comment;
+	@OneToOne
+	@JoinColumn(name = "purpose_id")
+	private Purpose purpose;
     
     public final int getVisitID()
     {
@@ -65,6 +68,11 @@ public class Visit {
         return comment;
     }
     
+    public final Purpose getPurpose()
+    {
+        return purpose;
+    }
+    
     public final void setVisitID(int visitID)
     {
         this.visitID=visitID;
@@ -88,6 +96,11 @@ public class Visit {
     public final void setComment(String comment)
     {
         this.comment=comment;
+    }
+    
+    public final void setPurpose(Purpose purpose)
+    {
+        this.purpose=purpose;
     }
 }
 
