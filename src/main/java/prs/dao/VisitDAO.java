@@ -22,17 +22,23 @@ public class VisitDAO {
     @PersistenceContext	
     private EntityManager entityManager;
 
-    /*
     @SuppressWarnings("unchecked")
     public List<Visit> getAllVisits(){
         String hql = "FROM Visit as visits ORDER BY visits.visitID";
 		return (List<Visit>) entityManager.createQuery(hql).getResultList();
     }
-    */
     
     @SuppressWarnings("unchecked")
-	public List<Visit> getThisVisits(String name){
+	public List<Visit> getThisDoctorVisits(String name){
         String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? ORDER BY visits.date";
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, name).getResultList();
+		return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getThisPatientVisits(String name){
+        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? ORDER BY visits.date";
         List<Visit> visits = entityManager.createQuery(hql)
 				.setParameter(1, name).getResultList();
 		return visits;
@@ -50,12 +56,44 @@ public class VisitDAO {
     }
     
     @SuppressWarnings("unchecked")
+	public List<Visit> getThisPatientFutureVisits(String name){
+        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? AND visits.date > ? ORDER BY visits.date";
+        java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, name)
+				.setParameter(2, date)
+				.getResultList();
+		return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
 	public List<Visit> getThisDoctorPastVisits(String name){
         String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date < ? ORDER BY visits.date DESC";
         java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
         List<Visit> visits = entityManager.createQuery(hql)
 				.setParameter(1, name)
 				.setParameter(2, date)
+				.getResultList();
+		return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getThisPatientPastVisits(String name){
+        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? AND visits.date < ? ORDER BY visits.date DESC";
+        java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, name)
+				.setParameter(2, date)
+				.getResultList();
+		return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Visit> getAllFutureVisits(){
+        String hql = "FROM Visit as visits WHERE visits.date > ? ORDER BY visits.date";
+        java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+        List<Visit> visits = entityManager.createQuery(hql)
+				.setParameter(1, date)
 				.getResultList();
 		return visits;
     }

@@ -66,6 +66,6 @@ public class PurposeService {
 	
 	public void addPurpose(Purpose purpose, String doctorName) {
 		purpose.setDoctor(doctorDAO.getDoctorByUsername(doctorName));
-		purposeDAO.addPatient(purpose);
+		purposeDAO.addPurpose(purpose);
 	}
 }

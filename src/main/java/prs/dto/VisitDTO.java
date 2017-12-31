@@ -22,12 +22,16 @@ public class VisitDTO {
     private DoctorDTO doctor;
     private PurposeDTO purpose;
     
+    public VisitDTO(){
+    }
+    
     public VisitDTO(Visit visit){
         this.visitID=visit.getVisitID();
         this.date = visit.getDate();
         this.comment= visit.getComment();
         this.patient=new PatientDTO(visit.getPatient());
         this.doctor=new DoctorDTO(visit.getDoctor());
+        this.purpose=new PurposeDTO(visit.getPurpose());
     }
     
     public final void setVisitID(int visitID){

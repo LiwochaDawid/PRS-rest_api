@@ -20,6 +20,9 @@ public class PurposeDTO {
     private Time duration;
     private int price;
     
+    public PurposeDTO(){
+    }
+    
     public PurposeDTO(Purpose purpose){
         this.purposeID = purpose.getPurposeID();
         this.name = purpose.getName();
@@ -48,7 +51,7 @@ public class PurposeDTO {
         return description;
     }
     
-    public final void setPurposeID(String description){
+    public final void setDescription(String description){
         this.description = description;
     }
     
@@ -56,7 +59,7 @@ public class PurposeDTO {
         return duration;
     }
     
-    public final void setPurposeID(Time duration){
+    public final void setDuration(Time duration){
         this.duration = duration;
     }
     

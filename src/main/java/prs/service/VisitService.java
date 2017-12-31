@@ -31,7 +31,6 @@ public class VisitService {
     @Autowired 
     private VisitDAO visitDAO;
     
-    /*
     public List<VisitDTO> getAllVisits() {
 		List<VisitDTO> visitsDTO = new ArrayList<>();
 		List<Visit> visits = visitDAO.getAllVisits();
@@ -40,35 +39,46 @@ public class VisitService {
 		}
 		return visitsDTO;
 	}
-	*/
+    
+    public List<VisitDateDTO> getAllVisitDates() {
+        List<VisitDateDTO> visitDateDTO = new ArrayList<>();
+		List<Visit> visits = visitDAO.getAllVisits();
+		for (int i=0; i<visits.size(); i++) {
+        	visitDateDTO.add(new VisitDateDTO(visits.get(i).getDate(), visits.get(i).getPurpose().getDuration()));
+		}
+		return visitDateDTO;
+	}
 
     public List<VisitDTO> getThisDoctorVisits(String username){
         List<VisitDTO> visitDTO = new ArrayList<>();
-        List<Visit> visits = visitDAO.getThisVisits(username);
+        List<Visit> visits = visitDAO.getThisDoctorVisits(username);
         for (int i=0; i<visits.size(); i++) {
 			visitDTO.add(new VisitDTO(visits.get(i)));
 		}
         return visitDTO;
     }
     
-    /*
-    public List<VisitDateDTO> getThisPatientVisits(String username){
-        List<VisitDateDTO> visitDateDTO = new ArrayList<>();
-        List<Visit> visits = visitDAO.getThisVisits(username);
+    public List<VisitDTO> getThisPatientVisits(String username){
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisPatientVisits(username);
         for (int i=0; i<visits.size(); i++) {
-        	VisitDTO visit = new VisitDTO();
-        	visit.setDate(visits.get(i).getDate());
-        	visit.setPurpose(new PurposeDTO());
-        	.setDuration(visits.get(i).getPurpose().getDuration());
-			visitDateDTO.add(visitDate);
+			visitDTO.add(new VisitDTO(visits.get(i)));
 		}
-        return visitDateDTO;
+        return visitDTO;
     }
-    */
     
     public List<VisitDTO> getThisDoctorFutureVisits(String username){
         List<VisitDTO> visitDTO = new ArrayList<>();
         List<Visit> visits = visitDAO.getThisDoctorFutureVisits(username);
+        for (int i=0; i<visits.size(); i++) {
+			visitDTO.add(new VisitDTO(visits.get(i)));
+		}
+        return visitDTO;
+    }
+    
+    public List<VisitDTO> getThisPatientFutureVisits(String username){
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisPatientFutureVisits(username);
         for (int i=0; i<visits.size(); i++) {
 			visitDTO.add(new VisitDTO(visits.get(i)));
 		}
@@ -82,6 +92,24 @@ public class VisitService {
 			visitDTO.add(new VisitDTO(visits.get(i)));
 		}
         return visitDTO;
+    }
+    
+    public List<VisitDTO> getThisPatientPastVisits(String username){
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisPatientPastVisits(username);
+        for (int i=0; i<visits.size(); i++) {
+			visitDTO.add(new VisitDTO(visits.get(i)));
+		}
+        return visitDTO;
+    }
+    
+    public List<VisitDateDTO> getAllFutureVisits(){
+        List<VisitDateDTO> visitDateDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getAllFutureVisits();
+        for (int i=0; i<visits.size(); i++) {
+        	visitDateDTO.add(new VisitDateDTO(visits.get(i).getDate(), visits.get(i).getPurpose().getDuration()));
+		}
+        return visitDateDTO;
     }
     
     public List<VisitDTO> getThisDoctorTodayVisits(String name){

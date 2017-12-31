@@ -15,6 +15,11 @@ public class VisitDateDTO {
     public VisitDateDTO(){
     }
     
+    public VisitDateDTO(Timestamp date, Time duration){
+    	this.date = date;
+    	this.duration = duration;
+    }
+    
     public final Timestamp getDate()
     {
         return date;

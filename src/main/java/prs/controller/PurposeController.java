@@ -19,12 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import prs.service.DoctorService;
 import prs.service.PurposeService;
-import prs.dto.DoctorDTO;
 import prs.dto.PurposeDTO;
-import prs.dto.VisitDTO;
-import prs.entity.Patient;
 import prs.entity.Purpose;
 
 @Controller
@@ -32,7 +28,6 @@ import prs.entity.Purpose;
 public class PurposeController {
     @Autowired
 	private PurposeService purposeService;
-	private DoctorService doctorService;
 	
     /*
     @PreAuthorize("hasRole('ROLE_DOCTOR')")
@@ -69,7 +64,7 @@ public class PurposeController {
 
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("add")
-	public ResponseEntity<Void> addPatient(@RequestBody Purpose purpose, HttpServletRequest request) {
+	public ResponseEntity<Void> addPurpose(@RequestBody Purpose purpose, HttpServletRequest request) {
 	    Principal principal = request.getUserPrincipal();
 		purposeService.addPurpose(purpose, principal.getName());
 		return new ResponseEntity<Void>(HttpStatus.OK);

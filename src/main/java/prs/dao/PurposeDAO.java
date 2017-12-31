@@ -55,7 +55,7 @@ public class PurposeDAO {
 		return purposes;
     }
 	
-	public void addPatient(Purpose purpose) {
+	public void addPurpose(Purpose purpose) {
 		entityManager.persist(purpose);
 	}
 }

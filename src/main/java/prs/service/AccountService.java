@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import prs.dao.AccountDAO;
+import prs.dao.ConfigurationDAO;
 import prs.dao.DoctorDAO;
 import prs.dao.PatientDAO;
+import prs.entity.Configuration;
 import prs.model.DoctorWrapper;
 import prs.model.PatientWrapper;
 
@@ -19,6 +21,8 @@ public class AccountService {
 	private DoctorDAO doctorDAO;
 	@Autowired 
 	private PatientDAO patientDAO;
+	@Autowired 
+	private ConfigurationDAO configurationDAO;
 	
 	public synchronized boolean registerDoctor(DoctorWrapper doctorWrapper) {
 		if (accountDAO.isUsernameExists(doctorWrapper.getAccount())) {
@@ -30,6 +34,10 @@ public class AccountService {
 			accountDAO.addAccount(doctorWrapper.getAccount());
 			doctorWrapper.getDoctor().setAccount(doctorWrapper.getAccount());
 			doctorDAO.addDoctor(doctorWrapper.getDoctor());
+			Configuration configuration = new Configuration();
+			configuration.setDefaultValues();
+			configuration.setDoctor(doctorWrapper.getDoctor());
+			configurationDAO.addConfiguration(configuration);
 			return true;
 		}
 	}

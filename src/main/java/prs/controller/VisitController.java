@@ -22,6 +22,7 @@ import prs.service.VisitService;
 
 
 import prs.dto.VisitDTO;
+import prs.dto.VisitDateDTO;
 import prs.entity.Visit;
 import prs.service.VisitService;
 /**
@@ -34,54 +35,76 @@ import prs.service.VisitService;
 public class VisitController {
     @Autowired
 	private VisitService visitService;
-    
-    /*
+
     @PreAuthorize("hasRole('ROLE_DOCTOR')")
     @GetMapping("all")
     public ResponseEntity<List<VisitDTO>> getAllVisits() {
 		List<VisitDTO> visits = visitService.getAllVisits();
 		return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
 	}
+    
+    /*
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("allDates")
+    public ResponseEntity<List<VisitDateDTO>> getAllVisitDates() {
+		List<VisitDateDTO> visits = visitService.getAllVisitDates();
+		return new ResponseEntity<List<VisitDateDTO>>(visits, HttpStatus.OK);
+	}
 	*/
 	    
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("this")
+	@GetMapping("thisDoctor")
 	public ResponseEntity<List<VisitDTO>> getThisDoctorVisits(HttpServletRequest request){
 	    Principal principal = request.getUserPrincipal();
 	    List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
 	    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
 	}
 	
-	/*
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
-	@GetMapping("test")
-	public ResponseEntity<List<VisitDTO>> test(HttpServletRequest request){
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("thisPatient")
+	public ResponseEntity<List<VisitDTO>> getThisPatientVisits(HttpServletRequest request){
 	    Principal principal = request.getUserPrincipal();
-	    if (request.isUserInRole("ROLE_DOCTOR")) {
-		    List<VisitDTO> visits = visitService.getThisDoctorVisits(principal.getName());
-		    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
-	    }
-	    else {
-		    List<VisitDTO> visits = visitService.getThisPatientVisits(principal.getName());
-		    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
-	    }
+	    List<VisitDTO> visits = visitService.getThisPatientVisits(principal.getName());
+	    return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
 	}
-	*/
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("future")
+	@GetMapping("futureDoctor")
 	public ResponseEntity<List<VisitDTO>> getThisDoctorFutureVisits(HttpServletRequest request){
 		Principal principal = request.getUserPrincipal();
 		List<VisitDTO> visits = visitService.getThisDoctorFutureVisits(principal.getName());
 		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("futurePatient")
+	public ResponseEntity<List<VisitDTO>> getThisPatientFutureVisits(HttpServletRequest request){
+		Principal principal = request.getUserPrincipal();
+		List<VisitDTO> visits = visitService.getThisPatientFutureVisits(principal.getName());
+		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
+	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("past")
+	@GetMapping("pastDoctor")
 	public ResponseEntity<List<VisitDTO>> getThisDoctorPastVisits(HttpServletRequest request){
 		Principal principal = request.getUserPrincipal();
 		List<VisitDTO> visits = visitService.getThisDoctorPastVisits(principal.getName());
 		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("pastPatient")
+	public ResponseEntity<List<VisitDTO>> getThisPatientPastVisits(HttpServletRequest request){
+		Principal principal = request.getUserPrincipal();
+		List<VisitDTO> visits = visitService.getThisPatientPastVisits(principal.getName());
+		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+	@GetMapping("pastPatient")
+	public ResponseEntity<List<VisitDateDTO>> getAllFutureVisits(){
+		List<VisitDateDTO> visits = visitService.getAllFutureVisits();
+		return new ResponseEntity<List<VisitDateDTO>>(visits,HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
