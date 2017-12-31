@@ -101,7 +101,7 @@ public class VisitController {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
-	@GetMapping("pastPatient")
+	@GetMapping("allUpcomingVisits")
 	public ResponseEntity<List<VisitDateDTO>> getAllFutureVisits(){
 		List<VisitDateDTO> visits = visitService.getAllFutureVisits();
 		return new ResponseEntity<List<VisitDateDTO>>(visits,HttpStatus.OK);
@@ -116,13 +116,27 @@ public class VisitController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("date/{date}")
+	@GetMapping("date={date}")
 	public ResponseEntity<List<VisitDTO>> getDoctorVisitsByDate(@PathVariable("date") String date, HttpServletRequest request) throws ParseException {
     	Principal principal = request.getUserPrincipal();
 		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
 		java.util.Date parsedDate = format.parse(date);
 		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
     	List<VisitDTO> visits = visitService.getThisDoctorDateVisits(principal.getName(), sqlDate);
+    	return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("dateStart={dateStart}&dateEnd={dateEnd}")
+	public ResponseEntity<List<VisitDTO>> getDoctorVisitsByDateBetween(@PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd, HttpServletRequest request) throws ParseException {
+    	Principal principal = request.getUserPrincipal();
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		java.util.Date parsedDate = format.parse(dateStart);
+		java.sql.Date sqlDateStart = new java.sql.Date(parsedDate.getTime());
+		format = new SimpleDateFormat("ddMMyyyy");
+		parsedDate = format.parse(dateEnd);
+		java.sql.Date sqlDateEnd = new java.sql.Date(parsedDate.getTime());
+    	List<VisitDTO> visits = visitService.getThisDoctorDateVisitsBetween(principal.getName(), sqlDateStart, sqlDateEnd);
     	return new ResponseEntity<List<VisitDTO>>(visits, HttpStatus.OK);
 	}
 }

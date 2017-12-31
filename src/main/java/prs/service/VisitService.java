@@ -129,4 +129,13 @@ public class VisitService {
         }
         return visitDTO;
     }
+
+    public List<VisitDTO> getThisDoctorDateVisitsBetween(String name, Date dateStart, Date dateEnd) {
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisDoctorDateVisitsBetween(name, dateStart, dateEnd);
+        for (int i=0; i<visits.size(); i++) {
+            visitDTO.add(new VisitDTO(visits.get(i)));
+        }
+        return visitDTO;
+    }
 }
