@@ -30,7 +30,7 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 	
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("{id}")
 	public ResponseEntity<PatientDTO> getPatient(@PathVariable("id") Integer id) {
 		PatientDTO patient = patientService.getPatientByID(id);
@@ -52,7 +52,7 @@ public class PatientController {
 		return new ResponseEntity<PatientDTO>(patient, HttpStatus.OK);
     }
 	
-	@PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@PostMapping("update")
 	public ResponseEntity<Void> updatePatient(@RequestBody Patient patient) {
 		patientService.updatePatient(patient);
@@ -61,11 +61,18 @@ public class PatientController {
 
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	@PostMapping("updateThis")
-	public ResponseEntity<Void> updateThisPatient(@RequestBody Patient patient,HttpServletRequest request)	{
+	public ResponseEntity<Void> updateThisPatient(@RequestBody Patient patient, HttpServletRequest request)	{
 		Principal principal = request.getUserPrincipal();
 		PatientDTO oldPatient = patientService.getPatientByUsername(principal.getName());
 		patient.setPatientID(oldPatient.getPatientID());
 		patientService.updatePatient(patient);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("add")
+	public ResponseEntity<Void> addPatient(@RequestBody Patient patient) {
+		patientService.addPatient(patient);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
