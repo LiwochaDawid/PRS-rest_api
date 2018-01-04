@@ -7,6 +7,8 @@ package prs.service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -175,6 +177,21 @@ public class VisitService {
 
     public Long getDoctorNumberOfVisits(String name, Date date) {
         return visitDAO.getDoctorNumberOfVisits(name, date);
+    }
+
+    public List<Long> getDoctorNumberOfMonthVisits(String name, Date date) {
+    	Calendar callendar = new GregorianCalendar();
+    	callendar.setTime(date);
+    	callendar.set(Calendar.DAY_OF_MONTH, 1);
+    	int daysInMonth = callendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    	
+    	List<Long> numberOfVisits = new ArrayList<Long>();
+    	
+    	for (int i = 1; i <= daysInMonth; i++) {
+    		numberOfVisits.add(visitDAO.getDoctorNumberOfVisits(name, new java.sql.Date(callendar.getTimeInMillis())));
+        	callendar.add(Calendar.DATE, 1);
+    	}
+        return numberOfVisits;
     }
 	
 	public void addVisitAsPatient(Visit visit, String name) {

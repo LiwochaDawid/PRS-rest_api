@@ -186,6 +186,17 @@ public class VisitController {
 		Long visits = visitService.getDoctorNumberOfVisits(principal.getName(), sqlDate);
     	return new ResponseEntity<Long>(visits, HttpStatus.OK);
 	}
+
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@GetMapping("numberOfVisitsMonth={date}")
+	public ResponseEntity<List<Long>> getDoctorNumberOfVisitsMonth(@PathVariable("date") String date, HttpServletRequest request) throws ParseException {
+    	Principal principal = request.getUserPrincipal();
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		java.util.Date parsedDate = format.parse(date);
+		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+		List<Long> visits = visitService.getDoctorNumberOfMonthVisits(principal.getName(), sqlDate);
+    	return new ResponseEntity<List<Long>>(visits, HttpStatus.OK);
+	}
 	
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	@PostMapping("addAsPatient")

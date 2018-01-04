@@ -97,7 +97,7 @@ public class VisitDAO {
     
     @SuppressWarnings("unchecked")
 	public List<Visit> getThisDoctorTodayVisits(String name){
-        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date dateStart = new Date(new java.util.Date().getTime());
         Date dateEnd = new Date(new java.util.Date().getTime() + 24*60*60*1000);
         List<Visit> visits = entityManager.createQuery(hql)
@@ -112,7 +112,7 @@ public class VisitDAO {
 
     @SuppressWarnings("unchecked")
     public List<Visit> getThisDoctorDateVisits(String name, Date date) {
-        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date dateStart = new Date(date.getTime());
         Date dateEnd = new Date(date.getTime() + 24*60*60*1000);
         List<Visit> visits = entityManager.createQuery(hql)
@@ -125,7 +125,7 @@ public class VisitDAO {
 
     @SuppressWarnings("unchecked")
     public List<Visit> getThisDoctorDateVisitsBetween(String name, Date dateStart, Date dateEnd) {
-        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date sqlDateStart = new Date(dateStart.getTime());
         Date sqlDateEnd = new Date(dateEnd.getTime() + 24*60*60*1000);
         List<Visit> visits = entityManager.createQuery(hql)
@@ -146,7 +146,7 @@ public class VisitDAO {
     
     @SuppressWarnings("unchecked")
 	public List<Visit> getPatientVisitsByID(int id, Date dateStart, Date dateEnd){
-        String hql = "FROM Visit as visits WHERE visits.patient.patientID = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "FROM Visit as visits WHERE visits.patient.patientID = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date sqlDateStart = new Date(dateStart.getTime());
         Date sqlDateEnd = new Date(dateEnd.getTime() + 24*60*60*1000);
         List<Visit> visits = entityManager.createQuery(hql)
@@ -159,7 +159,7 @@ public class VisitDAO {
 
     @SuppressWarnings("unchecked")
     public List<Visit> getThisPatientDateVisitsBetween(String name, Date dateStart, Date dateEnd) {
-        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "FROM Visit as visits WHERE visits.patient.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date sqlDateStart = new Date(dateStart.getTime());
         Date sqlDateEnd = new Date(dateEnd.getTime() + 24*60*60*1000);
         List<Visit> visits = entityManager.createQuery(hql)
@@ -184,10 +184,9 @@ public class VisitDAO {
 	public void addVisit(Visit visit) {
 		entityManager.persist(visit);
 	}
-
-    @SuppressWarnings("unchecked")
+	
     public Long getDoctorNumberOfVisits(String name, Date date) {
-        String hql = "SELECT COUNT (*) FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date > ? AND visits.date < ? ORDER BY visits.date";
+        String hql = "SELECT COUNT (*) FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date dateStart = new Date(date.getTime());
         Date dateEnd = new Date(date.getTime() + 24*60*60*1000);
         Long visits = (Long) entityManager.createQuery(hql)
