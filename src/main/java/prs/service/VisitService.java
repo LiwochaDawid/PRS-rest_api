@@ -111,6 +111,15 @@ public class VisitService {
 		}
         return visitDateDTO;
     }
+    
+    public List<VisitDateDTO> getDoctorVisitsFromDay(int id, Date date){
+        List<VisitDateDTO> visitDateDTO = new ArrayList<>();
+        List<Visit> visits = visitDAO.getThisDoctorDateVisits(doctorDAO.getDoctorByID(id).getAccount().getUsername(), date);
+        for (int i=0; i<visits.size(); i++) {
+        	visitDateDTO.add(new VisitDateDTO(visits.get(i).getDate(), visits.get(i).getPurpose().getDuration()));
+		}
+        return visitDateDTO;
+    }
 
     public List<VisitDTO> getThisDoctorDateVisits(String name, Date date) {
         List<VisitDTO> visitDTO = new ArrayList<>();

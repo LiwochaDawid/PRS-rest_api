@@ -168,6 +168,16 @@ public class VisitController {
     	return new ResponseEntity<List<VisitDateDTO>>(visits, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("doctorID={id}&date={date}")
+	public ResponseEntity<List<VisitDateDTO>> getDoctorVisitsFromDay(@PathVariable("id") int id, @PathVariable("date") String date) throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		java.util.Date parsedDate = format.parse(date);
+		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+		List<VisitDateDTO> visits = visitService.getDoctorVisitsFromDay(id, sqlDate);
+    	return new ResponseEntity<List<VisitDateDTO>>(visits, HttpStatus.OK);
+	}
+
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("numberOfVisitsDate={date}")
 	public ResponseEntity<Long> getDoctorNumberOfVisits(@PathVariable("date") String date, HttpServletRequest request) throws ParseException {
