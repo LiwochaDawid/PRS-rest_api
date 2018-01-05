@@ -46,4 +46,10 @@ public class AccountDAO {
 				.setParameter(1, username).getResultList();
 		return account.get(0);
 	}
+    
+	public void changePassword(Account oldAccount, String pass) {
+		Account account = getAccountByUsername(oldAccount.getUsername());
+		account.setPassword(getPasswordEncoder().encode(pass));
+		entityManager.flush();
+	}
 }

@@ -1,6 +1,9 @@
 package prs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +11,7 @@ import prs.dao.AccountDAO;
 import prs.dao.ConfigurationDAO;
 import prs.dao.DoctorDAO;
 import prs.dao.PatientDAO;
+import prs.entity.Account;
 import prs.entity.Configuration;
 import prs.model.DoctorWrapper;
 import prs.model.PatientWrapper;
@@ -23,6 +27,10 @@ public class AccountService {
 	private PatientDAO patientDAO;
 	@Autowired 
 	private ConfigurationDAO configurationDAO;
+
+    public PasswordEncoder getPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 	
 	public synchronized boolean registerDoctor(DoctorWrapper doctorWrapper) {
 		if (accountDAO.isUsernameExists(doctorWrapper.getAccount())) {
@@ -53,6 +61,17 @@ public class AccountService {
 			patientWrapper.getPatient().setAccount(patientWrapper.getAccount());
 			patientDAO.addPatient(patientWrapper.getPatient());
 			return true;
+		}
+	}
+	
+	public synchronized boolean changePassword(Account account, String pass) {
+		Boolean passwordCorrent = BCrypt.checkpw(account.getPassword(), accountDAO.getAccountByUsername(account.getUsername()).getPassword());
+		if (accountDAO.isUsernameExists(account) && passwordCorrent) {
+			accountDAO.changePassword(account, pass);
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 

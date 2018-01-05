@@ -257,7 +257,9 @@ public class Configuration {
         this.saWorkEnd = java.sql.Time.valueOf("15:00:00");
         this.suWorkStart = java.sql.Time.valueOf("00:00:00");
         this.suWorkEnd = java.sql.Time.valueOf("00:00:00");
-        this.registrationTerm = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 90);
+        this.registrationTerm = new java.sql.Date(calendar.getTime().getTime());
         this.maxVisits = 10;
     }
 }

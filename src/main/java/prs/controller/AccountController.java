@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import prs.entity.Account;
 import prs.model.DoctorWrapper;
 import prs.model.PatientWrapper;
 import prs.service.AccountService;
@@ -38,6 +40,17 @@ public class AccountController {
         }
         else {
         	return new ResponseEntity<Void>(HttpStatus.CREATED);
+        }
+	}
+	
+	@PostMapping("changePassword")
+	public ResponseEntity<Void> changePassword(@RequestBody Account account, @RequestHeader(value="pass") String pass) {
+		boolean isSuccess = accountService.changePassword(account, pass);
+        if (!isSuccess) {
+        	return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+        else {
+        	return new ResponseEntity<Void>(HttpStatus.OK);
         }
 	}
 }
