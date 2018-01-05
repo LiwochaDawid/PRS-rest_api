@@ -96,21 +96,6 @@ public class VisitDAO {
     }
     
     @SuppressWarnings("unchecked")
-	public List<Visit> getThisDoctorTodayVisits(String name){
-        String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
-        Date dateStart = new Date(new java.util.Date().getTime());
-        Date dateEnd = new Date(new java.util.Date().getTime() + 24*60*60*1000);
-        List<Visit> visits = entityManager.createQuery(hql)
-				.setParameter(1, name)
-				.setParameter(2, dateStart)
-				.setParameter(3, dateEnd)
-				.getResultList();
-        System.out.println(dateStart);
-        System.out.println(dateEnd);
-		return visits;
-    }
-
-    @SuppressWarnings("unchecked")
     public List<Visit> getThisDoctorDateVisits(String name, Date date) {
         String hql = "FROM Visit as visits WHERE visits.doctor.account.username = ? AND visits.date >= ? AND visits.date < ? ORDER BY visits.date";
         Date dateStart = new Date(date.getTime());

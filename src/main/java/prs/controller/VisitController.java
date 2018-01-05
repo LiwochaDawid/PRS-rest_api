@@ -101,14 +101,6 @@ public class VisitController {
 		List<VisitDateDTO> visits = visitService.getAllFutureVisits();
 		return new ResponseEntity<List<VisitDateDTO>>(visits,HttpStatus.OK);
 	}
-	
-	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("today")
-	public ResponseEntity<List<VisitDTO>> getThisDoctorTodayVisits(HttpServletRequest request){
-		Principal principal = request.getUserPrincipal();
-		List<VisitDTO> visits = visitService.getThisDoctorTodayVisits(principal.getName());
-		return new ResponseEntity<List<VisitDTO>>(visits,HttpStatus.OK);
-	}
 
 	@PreAuthorize("hasRole('ROLE_DOCTOR')")
 	@GetMapping("thisDoctorDate={date}")
@@ -195,6 +187,16 @@ public class VisitController {
 		java.util.Date parsedDate = format.parse(date);
 		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
 		List<Long> visits = visitService.getDoctorNumberOfMonthVisits(principal.getName(), sqlDate);
+    	return new ResponseEntity<List<Long>>(visits, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@GetMapping("numberOfVisitsByPatient={date}&doctorID={id}")
+	public ResponseEntity<List<Long>> getDoctorNumberOfMonthVisitsByPatient(@PathVariable("date") String date, @PathVariable("id") int id) throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		java.util.Date parsedDate = format.parse(date);
+		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+		List<Long> visits = visitService.getDoctorNumberOfMonthVisitsByPatient(id, sqlDate);
     	return new ResponseEntity<List<Long>>(visits, HttpStatus.OK);
 	}
 	

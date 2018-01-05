@@ -111,15 +111,6 @@ public class VisitService {
 		}
         return visitDateDTO;
     }
-    
-    public List<VisitDTO> getThisDoctorTodayVisits(String name){
-        List<VisitDTO> visitDTO = new ArrayList<>();
-        List<Visit> visits = visitDAO.getThisDoctorTodayVisits(name);
-        for (int i=0; i<visits.size(); i++) {
-			visitDTO.add(new VisitDTO(visits.get(i)));
-		}
-        return visitDTO;
-    }
 
     public List<VisitDTO> getThisDoctorDateVisits(String name, Date date) {
         List<VisitDTO> visitDTO = new ArrayList<>();
@@ -192,6 +183,10 @@ public class VisitService {
         	callendar.add(Calendar.DATE, 1);
     	}
         return numberOfVisits;
+    }
+
+    public List<Long> getDoctorNumberOfMonthVisitsByPatient(int id, Date date) {
+        return getDoctorNumberOfMonthVisits(doctorDAO.getDoctorByID(id).getAccount().getUsername(), date);
     }
 	
 	public void addVisitAsPatient(Visit visit, String name) {
