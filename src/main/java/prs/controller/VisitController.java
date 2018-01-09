@@ -225,4 +225,30 @@ public class VisitController {
 		visitService.addVisitAsDoctor(visit, principal.getName());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	@PostMapping("deleteAsPatientVisitID={id}")
+	public ResponseEntity<Void> deleteVisitAsPatient(@PathVariable("id") int id, HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		
+		if (visitService.deleteVisitAsPatient(id, principal.getName())) {
+			return new ResponseEntity<Void>(HttpStatus.OK);			
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	@PostMapping("deleteAsDoctorVisitID={id}")
+	public ResponseEntity<Void> deleteVisitAsDoctor(@PathVariable("id") int id, HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		
+		if (visitService.deleteVisitAsDoctor(id, principal.getName())) {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
 }

@@ -20,6 +20,14 @@ public class VisitDAO {
     private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
+    public Visit getVisit(int id){
+        String hql = "FROM Visit as visits WHERE visits.visitID = ? ORDER BY visits.visitID";
+        List<Visit> visit = entityManager.createQuery(hql)
+				.setParameter(1, id).getResultList();
+        if (visit.size() > 0) return visit.get(0);
+        else return null;
+    }
+    
     public List<Visit> getAllVisits(){
         String hql = "FROM Visit as visits ORDER BY visits.visitID";
 		return (List<Visit>) entityManager.createQuery(hql).getResultList();
@@ -180,5 +188,13 @@ public class VisitDAO {
                 .setParameter(3, dateEnd)
                 .getSingleResult();
         return visits;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public void deleteVisit(int id){
+        String hql = "DELETE FROM Visit as visits WHERE visits.visitID = ?";
+        entityManager.createQuery(hql)
+				.setParameter(1, id)
+				.executeUpdate();
     }
 }

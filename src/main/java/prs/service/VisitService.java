@@ -6,6 +6,7 @@
 package prs.service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -215,5 +216,45 @@ public class VisitService {
 	public void addVisit(Visit visit) {
 		//Conflict handling missing
 		visitDAO.addVisit(visit);
+	}
+	
+	public boolean deleteVisitAsPatient(int id, String name) {
+		Visit visit = visitDAO.getVisit(id);
+		if (visit != null) {
+			if (patientDAO.getPatientByUsername(name).getPatientID() == visit.getPatient().getPatientID()) {
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 24*60*60*1000);
+		        Date dateNow = new Date(timestamp.getTime());
+				Date visitDate = new Date(visit.getDate().getTime());
+				
+				if (dateNow.compareTo(visitDate) < 0) {
+					deleteVisit(visit);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean deleteVisitAsDoctor(int id, String name) {
+		Visit visit = visitDAO.getVisit(id);
+		if (visit != null) {
+			if (doctorDAO.getDoctorByUsername(name).getDoctorID() == visit.getDoctor().getDoctorID()) {
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis() - 7*24*60*60*1000);
+		        Date dateNow = new Date(timestamp.getTime());
+				Date visitDate = new Date(visit.getDate().getTime());
+				
+				if (dateNow.compareTo(visitDate) < 0) {
+					deleteVisit(visit);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public void deleteVisit(Visit visit) {
+		visitDAO.deleteVisit(visit.getVisitID());
 	}
 }
