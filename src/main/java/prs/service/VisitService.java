@@ -19,6 +19,7 @@ import prs.dto.VisitDateDTO;
 import prs.dao.DoctorDAO;
 import prs.dao.PatientDAO;
 import prs.dao.VisitDAO;
+import prs.entity.Patient;
 import prs.entity.Visit;
 
 @Transactional
@@ -199,12 +200,15 @@ public class VisitService {
     }
 	
 	public void addVisitAsPatient(Visit visit, String name) {
-		visit.getPatient().setPatientID(patientDAO.getPatientByUsername(name).getPatientID());
+		if (visit.getPatient() == null) visit.setPatient(patientDAO.getPatientByUsername(name));
+		else visit.getPatient().setPatientID(patientDAO.getPatientByUsername(name).getPatientID());
 		addVisit(visit);
 	}
 	
 	public void addVisitAsDoctor(Visit visit, String name) {
-		visit.getDoctor().setDoctorID(doctorDAO.getDoctorByUsername(name).getDoctorID());
+		if (visit.getDoctor() == null) visit.setDoctor(doctorDAO.getDoctorByUsername(name));
+		else visit.getDoctor().setDoctorID(doctorDAO.getDoctorByUsername(name).getDoctorID());
+		
 		addVisit(visit);
 	}
 	
